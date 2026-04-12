@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Work\\csharp-concurrency-cookbook\\ConcurrencyCookbook\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{37A7E66A-3C8B-4BD0-8888-2F5E85956AF7}|Overview\\Overview.csproj|d:\\work\\csharp-concurrency-cookbook\\concurrencycookbook\\overview\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{37A7E66A-3C8B-4BD0-8888-2F5E85956AF7}|Overview\\Overview.csproj|solutionrelative:overview\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Work\\csharp-concurrency-cookbook\\ConcurrencyCookbook\\Overview\\Program.cs",
+              "RelativeDocumentMoniker": "Overview\\Program.cs",
+              "ToolTip": "D:\\Work\\csharp-concurrency-cookbook\\ConcurrencyCookbook\\Overview\\Program.cs",
+              "RelativeToolTip": "Overview\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-12T06:14:24.736Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
