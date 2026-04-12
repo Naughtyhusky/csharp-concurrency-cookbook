@@ -1,3 +1,5 @@
 <Solution>
-  <Project Path="Overview/Overview.csproj" />
+  <Folder Name="/Src/">
+    <Project Path="Overview/Overview.csproj" />
+  </Folder>
 </Solution>
