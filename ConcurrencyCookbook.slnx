@@ -1,5 +1,5 @@
 <Solution>
-  <Folder Name="/Src/">
+  <Folder Name="/01-02.Basics/">
     <Project Path="Overview/Overview.csproj" />
   </Folder>
 </Solution>
