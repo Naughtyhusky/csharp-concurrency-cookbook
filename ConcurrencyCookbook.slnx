@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/01-02.Basics/">
     <Project Path="Overview/Overview.csproj" />
+    <Project Path="Threads/Threads.csproj" Id="6920530b-8df3-42e2-9808-6d931b4f7946" />
   </Folder>
 </Solution>

@@ -77,6 +77,12 @@ csharp-concurrency-cookbook/
 │   ├── TaskTypeDemo.cs         # 任务类型识别
 │   └── CommonMistakesDemo.cs   # 常见误区
 │
+├── Threads/                    # 第二章：并发的底层（Thread、ThreadPool、Task）
+│   ├── Program.cs              # 程序入口
+│   ├── ThreadVsTaskDemo.cs     # Thread vs Task 性能对比
+│   ├── FalseSharingDemo.cs     # False Sharing 演示
+│   └── (更多示例陆续添加...)
+│
 ├── (更多章节代码将陆续添加...)
 │
 ├── README.md                   # 本文件
@@ -84,7 +90,7 @@ csharp-concurrency-cookbook/
 ```
 
 > **注意**：本项目是系列教程（共 21 章），代码将随着教程进度逐步添加。  
-> 当前已完成：**第一章** | 进度：**1/21** (4.8%)
+> 当前已完成：**第一、二章** | 进度：**2/21** (9.5%)
 
 ---
 
@@ -107,6 +113,46 @@ csharp-concurrency-cookbook/
 **运行方式**：
 ```bash
 dotnet run --project Overview
+```
+
+---
+
+### ✅ 第二章：并发的底层（Thread、ThreadPool、Task）
+
+**学习目标**：深入理解Thread、ThreadPool和Task的本质区别和底层机制
+
+**代码位置**：`Threads/` 文件夹
+
+| 文件 | 说明 | 核心内容 |
+|------|------|---------|
+| `ThreadVsTaskDemo.cs` | Thread vs Task 对比 | 创建10000个Thread vs Task的性能差异 |
+| `FalseSharingDemo.cs` | False Sharing 演示 | CPU缓存行竞争导致的性能问题 |
+
+**运行方式**：
+```bash
+dotnet run --project Threads
+```
+
+**核心知识点**：
+- 🧵 Thread 的创建成本和内存开销（虚拟内存 vs 物理内存）
+- 🔄 ThreadPool 的工作窃取算法（.NET Core vs .NET Framework）
+- 📦 Task 的本质（异步操作抽象，不等于线程）
+- ⚡ I/O 密集型 Task 不占用线程的原理
+- 🚫 False Sharing：多线程性能杀手
+
+**实验结果预览**：
+```
+10000 个 Thread：
+  - 虚拟内存：约 10 GB
+  - 物理内存：1-2 GB
+  - 完成时间：5-10 秒
+  - 线程数：10000
+
+10000 个 Task：
+  - 内存：约 2 MB
+  - 完成时间：约 5 秒
+  - 实际线程数：10-20
+  - 性能提升：内存节省 5000x
 ```
 
 ---
