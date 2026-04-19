@@ -83,6 +83,21 @@ csharp-concurrency-cookbook/
 │   ├── FalseSharingDemo.cs     # False Sharing 演示
 │   └── (更多示例陆续添加...)
 │
+├── TaskAPI/                    # 第三章：Task API 完全指南
+│   ├── Program.cs              # 程序入口
+│   ├── Demo01_TaskCreation.cs  # 创建任务的三种方式
+│   ├── Demo02_TaskWaiting.cs   # 等待任务完成
+│   ├── Demo03_TaskComposition.cs # 组合任务（WhenAll/WhenAny/WhenEach）
+│   ├── Demo04_TaskContinuation.cs # 任务延续（ContinueWith vs await）
+│   ├── Demo05_TaskStatus.cs    # 任务状态查询
+│   ├── Demo06_CommonPitfalls.cs # 常见陷阱
+│   └── Demo07_PracticalExamples.cs # 实战示例
+│
+├── Blogs/                      # 📚 配套博客文章
+│   ├── 01-并发编程全景图.md
+│   ├── 02-Thread-ThreadPool-Task深入解析.md
+│   └── 03-Task-API完全指南.md  # ✅ 最新完成
+│
 ├── (更多章节代码将陆续添加...)
 │
 ├── README.md                   # 本文件
@@ -90,7 +105,7 @@ csharp-concurrency-cookbook/
 ```
 
 > **注意**：本项目是系列教程（共 21 章），代码将随着教程进度逐步添加。  
-> 当前已完成：**第一、二章** | 进度：**2/21** (9.5%)
+> 当前已完成：**第一、二、三章** | 进度：**3/21** (14.3%)
 
 ---
 
@@ -154,6 +169,94 @@ dotnet run --project Threads
   - 实际线程数：10-20
   - 性能提升：内存节省 5000x
 ```
+
+---
+
+### ✅ 第三章：Task API 完全指南
+
+**学习目标**：系统掌握 Task 类的核心 API，为深入学习 async/await 打下坚实基础
+
+**代码位置**：`TaskAPI/` 文件夹
+
+**配套博客**：[03-Task-API完全指南.md](Blogs/03-Task-API完全指南.md)
+
+| 文件 | 说明 | 核心内容 |
+|------|------|---------|
+| `Demo01_TaskCreation.cs` | 创建任务 | Task.Run vs Task.Factory.StartNew vs new Task() |
+| `Demo02_TaskWaiting.cs` | 等待任务 | Wait()、Wait(timeout)、WaitAll、WaitAny |
+| `Demo03_TaskComposition.cs` | 组合任务 | WhenAll、WhenAny、WhenEach (.NET 9+) |
+| `Demo04_TaskContinuation.cs` | 任务延续 | ContinueWith vs await |
+| `Demo05_TaskStatus.cs` | 任务状态 | TaskStatus、IsCompleted、IsFaulted、IsCanceled |
+| `Demo06_CommonPitfalls.cs` | 常见陷阱 | 闭包陷阱、死锁、双重异步、异常吞没 |
+| `Demo07_PracticalExamples.cs` | 实战示例 | 超时控制、重试逻辑、并发限流 |
+
+**运行方式**：
+```bash
+dotnet run --project TaskAPI
+```
+
+**核心知识点**：
+- 🎨 **创建任务**：Task.Run（推荐）、Task.Factory.StartNew（高级控制）、new Task（手动启动）
+- ⏳ **等待任务**：Wait() 的阻塞机制、ManualResetEventSlim 原理、ASP.NET Core 性能陷阱
+- 🔀 **组合任务**：WhenAll（并发执行）、WhenAny（超时控制）、WhenEach（.NET 9 新特性）
+- 🔗 **任务延续**：ContinueWith（传统方式）vs await（现代推荐）
+- 📊 **任务状态**：TaskStatus 枚举、IsCompletedSuccessfully（.NET Core 2.0+）
+- ⚠️ **常见陷阱**：循环闭包、UI 死锁、双重异步、异常吞没
+- ⚙️ **高级主题**：TaskScheduler、TaskFactory、LongRunning 选项
+
+**实战示例**：
+```csharp
+// 示例 1：超时控制模式
+public async Task<string> GetDataWithTimeoutAsync(string url, TimeSpan timeout)
+{
+    var dataTask = httpClient.GetStringAsync(url);
+    var timeoutTask = Task.Delay(timeout);
+
+    var completedTask = await Task.WhenAny(dataTask, timeoutTask);
+
+    if (completedTask == timeoutTask)
+    {
+        throw new TimeoutException("请求超时");
+    }
+
+    return await dataTask;
+}
+
+// 示例 2：并发限流（使用 SemaphoreSlim）
+public async Task<List<string>> ProcessUrlsWithLimitAsync(
+    List<string> urls, 
+    int maxConcurrency)
+{
+    var semaphore = new SemaphoreSlim(maxConcurrency);
+    var tasks = urls.Select(async url =>
+    {
+        await semaphore.WaitAsync();
+        try
+        {
+            return await httpClient.GetStringAsync(url);
+        }
+        finally
+        {
+            semaphore.Release();
+        }
+    });
+
+    return (await Task.WhenAll(tasks)).ToList();
+}
+```
+
+**关键速查表**：
+
+| API | 说明 | 推荐度 | 使用场景 |
+|-----|------|--------|---------|
+| `Task.Run` | 立即启动任务 | ✅ 推荐 | 日常首选 |
+| `Task.WhenAll` | 等待所有任务 | ✅ 推荐 | 并发执行多个任务 |
+| `Task.WhenAny` | 等待任意一个 | ✅ 推荐 | 超时控制、竞速 |
+| `await` | 异步等待 | ✅ 推荐 | 异步方法中 |
+| `Task.Factory.StartNew` | 高级控制 | ⚠️ 特殊场景 | 需要 LongRunning 等选项 |
+| `ContinueWith` | 任务延续 | ⚠️ 特殊场景 | 需要指定 TaskScheduler |
+| `.Result` | 获取结果 | ❌ 避免 | 容易死锁 |
+| `.Wait()` | 阻塞等待 | ❌ 避免 | 浪费线程资源 |
 
 ---
 
@@ -455,7 +558,7 @@ dotnet --version
 
 ## 📝 路线图
 
-### 📊 整体进度：1/21 章节（4.8%）
+### 📊 整体进度：3/21 章节（14.3%）
 
 本项目是《C# 并发编程实战：从零到精通》系列教程的配套代码仓库，**共 21 章**。
 
@@ -468,7 +571,7 @@ dotnet --version
 | 章节 | 状态 | 主题 | 代码位置 |
 |------|------|------|---------|
 | ✅ 01 | **已完成** | 并发编程全景图 | `Overview/` |
-| 📅 02 | 计划中 | 线程的底层：Thread、ThreadPool 与 Task | `Threads/` |
+| ✅ 02 | **已完成** | 线程的底层：Thread、ThreadPool 与 Task | `Threads/` |
 
 **目标**：建立并发编程的全局认知，理解核心概念和底层机制。
 
@@ -478,7 +581,7 @@ dotnet --version
 
 | 章节 | 状态 | 主题 | 代码位置 |
 |------|------|------|---------|
-| 📅 03 | 计划中 | Task API 完全指南 | `TaskAPI/` |
+| ✅ 03 | **已完成** | Task API 完全指南 | `TaskAPI/` |
 | 📅 04 | 计划中 | async/await 原理与优化 | `AsyncAwait/` |
 | 📅 05 | 计划中 | SynchronizationContext 深度剖析 | `SyncContext/` |
 | 📅 06 | 计划中 | CancellationToken 与超时控制 | `Cancellation/` |
@@ -541,9 +644,10 @@ dotnet --version
 ### 🎯 近期计划
 
 - [x] ✅ **第 01 章**：并发编程全景图（已完成）
-- [ ] 🚧 **第 02 章**：线程的底层原理（进行中）
-- [ ] 📅 **第 03 章**：Task API 完全指南
-- [ ] 📅 **第 04-06 章**：异步基础篇
+- [x] ✅ **第 02 章**：线程的底层原理（已完成）
+- [x] ✅ **第 03 章**：Task API 完全指南（已完成）✨
+- [ ] 🚧 **第 04 章**：async/await 原理与性能优化（进行中）
+- [ ] 📅 **第 05-06 章**：异步基础篇
 - [ ] 📅 **第 07-21 章**：进阶篇 + 实战篇
 
 **更新频率**：争取每周 1-2 章
@@ -589,8 +693,10 @@ dotnet --version
 
 **当前进度**：
 - ✅ 第一章已完成
-- 🚧 第二章进行中
-- 预计 2024 年完成前 10 章
+- ✅ 第二章已完成
+- ✅ 第三章已完成（最新）
+- 🚧 第四章进行中
+- 预计 2025 年完成前 10 章
 
 ### Q4: 如何选择 async/await 还是 Parallel？
 
