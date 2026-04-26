@@ -4,6 +4,7 @@
     <Project Path="Threads/Threads.csproj" Id="6920530b-8df3-42e2-9808-6d931b4f7946" />
   </Folder>
   <Folder Name="/03-06.AsyncBasics/">
+    <Project Path="AsyncAwait/AsyncAwait.csproj" Id="1ce74a8e-dbb6-4c6c-bbee-493891f7d63a" />
     <Project Path="TaskAPI/TaskAPI.csproj" Id="29331b8f-c9ce-4d89-ad6d-c8758f207648" />
   </Folder>
 </Solution>

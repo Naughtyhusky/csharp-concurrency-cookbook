@@ -93,10 +93,21 @@ csharp-concurrency-cookbook/
 │   ├── Demo06_CommonPitfalls.cs # 常见陷阱
 │   └── Demo07_PracticalExamples.cs # 实战示例
 │
+├── AsyncAwait/                 # 第四章：async/await 原理与性能优化
+│   ├── Program.cs              # 程序入口
+│   ├── Demo01_AsyncBasics.cs   # async/await 基础
+│   ├── Demo02_StateMachine.cs  # 状态机原理演示
+│   ├── Demo03_ThreadComparison.cs # 线程使用对比
+│   ├── Demo04_SynchronizationContext.cs # SynchronizationContext 与 ConfigureAwait
+│   ├── Demo05_ValueTask.cs     # ValueTask 性能优化
+│   ├── Demo06_CommonPitfalls.cs # 常见陷阱（async void、死锁等）
+│   └── Demo07_PracticalExamples.cs # 实战示例
+│
 ├── Blogs/                      # 📚 配套博客文章
 │   ├── 01-并发编程全景图.md
 │   ├── 02-Thread-ThreadPool-Task深入解析.md
-│   └── 03-Task-API完全指南.md  # ✅ 最新完成
+│   ├── 03-Task-API完全指南.md
+│   └── 04-async-await原理与性能优化.md  # ✅ 最新完成
 │
 ├── (更多章节代码将陆续添加...)
 │
@@ -105,7 +116,7 @@ csharp-concurrency-cookbook/
 ```
 
 > **注意**：本项目是系列教程（共 21 章），代码将随着教程进度逐步添加。  
-> 当前已完成：**第一、二、三章** | 进度：**3/21** (14.3%)
+> 当前已完成：**第一、二、三、四章** | 进度：**4/21** (19.0%)
 
 ---
 
@@ -257,6 +268,81 @@ public async Task<List<string>> ProcessUrlsWithLimitAsync(
 | `ContinueWith` | 任务延续 | ⚠️ 特殊场景 | 需要指定 TaskScheduler |
 | `.Result` | 获取结果 | ❌ 避免 | 容易死锁 |
 | `.Wait()` | 阻塞等待 | ❌ 避免 | 浪费线程资源 |
+
+---
+
+### ✅ 第四章：async/await 原理与性能优化
+
+**学习目标**：深入理解 async/await 的编译器魔法，掌握性能优化技巧
+
+**代码位置**：`AsyncAwait/` 文件夹
+
+**配套博客**：[04-async-await原理与性能优化.md](Blogs/04-async-await原理与性能优化.md)
+
+| 文件 | 说明 | 核心内容 |
+|------|------|---------|
+| `Demo01_AsyncBasics.cs` | 基础回顾 | async/await 的三种返回类型、语义规则 |
+| `Demo02_StateMachine.cs` | 状态机原理 | 编译器生成的状态机、同步路径 vs 异步路径 |
+| `Demo03_ThreadComparison.cs` | 线程使用对比 | I/O 异步不占用线程、CPU 密集型需要 Task.Run |
+| `Demo04_SynchronizationContext.cs` | 上下文捕获 | SynchronizationContext、ConfigureAwait(false) |
+| `Demo05_ValueTask.cs` | 性能优化 | ValueTask<T> vs Task<T>、缓存场景优化 |
+| `Demo06_CommonPitfalls.cs` | 常见陷阱 | async void、死锁、过度异步化、忘记 await |
+| `Demo07_PracticalExamples.cs` | 实战示例 | 带缓存的服务、并发控制、超时、重试 |
+
+**运行方式**：
+```bash
+dotnet run --project AsyncAwait
+```
+
+**核心知识点**：
+- 🔮 **状态机原理**：编译器生成的 IAsyncStateMachine、MoveNext 方法、同步路径优化
+- 🧵 **线程真相**：I/O 异步不占用线程（IOCP）、await 前后线程可能不同
+- 🚀 **性能优化**：ValueTask<T> 减少堆分配、ConfigureAwait(false) 避免上下文切换
+- 📝 **上下文捕获**：SynchronizationContext 是什么、UI 应用 vs 库代码的区别
+- ⚠️ **常见陷阱**：async void 危险、死锁原因、过度异步化、忘记 await
+
+**实战场景**：
+```csharp
+// 1. ValueTask 优化缓存场景
+public async ValueTask<string> GetCachedDataAsync(string key)
+{
+    if (_cache.TryGetValue(key, out string value))
+        return value; // ✅ 无堆分配
+
+    return await _database.GetAsync(key);
+}
+
+// 2. 并发限流（SemaphoreSlim）
+public async Task<List<string>> DownloadAllAsync(List<string> urls)
+{
+    var semaphore = new SemaphoreSlim(5); // 最多 5 个并发
+    var tasks = urls.Select(async url =>
+    {
+        await semaphore.WaitAsync();
+        try { return await _client.GetStringAsync(url); }
+        finally { semaphore.Release(); }
+    });
+    return (await Task.WhenAll(tasks)).ToList();
+}
+
+// 3. 超时控制
+public async Task<string> GetWithTimeoutAsync(string url, TimeSpan timeout)
+{
+    using var cts = new CancellationTokenSource(timeout);
+    return await _client.GetStringAsync(url, cts.Token);
+}
+```
+
+**关键速查表**：
+
+| 场景 | 推荐做法 | 避免做法 |
+|------|---------|---------|
+| **返回类型** | `Task<T>` 或 `ValueTask<T>` | `async void`（除事件处理器） |
+| **I/O 操作** | 直接 `await` | `Task.Run` 包装 |
+| **CPU 密集型** | `await Task.Run(...)` | 直接在 async 方法中执行 |
+| **库代码** | `ConfigureAwait(false)` | 默认捕获上下文 |
+| **等待任务** | `await` | `.Result` 或 `.Wait()` |
+| **高频调用** | `ValueTask<T>` | `Task<T>`（高 GC 压力） |
 
 ---
 
@@ -558,7 +644,7 @@ dotnet --version
 
 ## 📝 路线图
 
-### 📊 整体进度：3/21 章节（14.3%）
+### 📊 整体进度：4/21 章节（19.0%）
 
 本项目是《C# 并发编程实战：从零到精通》系列教程的配套代码仓库，**共 21 章**。
 
@@ -582,7 +668,7 @@ dotnet --version
 | 章节 | 状态 | 主题 | 代码位置 |
 |------|------|------|---------|
 | ✅ 03 | **已完成** | Task API 完全指南 | `TaskAPI/` |
-| 📅 04 | 计划中 | async/await 原理与优化 | `AsyncAwait/` |
+| ✅ 04 | **已完成** | async/await 原理与性能优化 | `AsyncAwait/` |
 | 📅 05 | 计划中 | SynchronizationContext 深度剖析 | `SyncContext/` |
 | 📅 06 | 计划中 | CancellationToken 与超时控制 | `Cancellation/` |
 
@@ -645,9 +731,10 @@ dotnet --version
 
 - [x] ✅ **第 01 章**：并发编程全景图（已完成）
 - [x] ✅ **第 02 章**：线程的底层原理（已完成）
-- [x] ✅ **第 03 章**：Task API 完全指南（已完成）✨
-- [ ] 🚧 **第 04 章**：async/await 原理与性能优化（进行中）
-- [ ] 📅 **第 05-06 章**：异步基础篇
+- [x] ✅ **第 03 章**：Task API 完全指南（已完成）
+- [x] ✅ **第 04 章**：async/await 原理与性能优化（已完成）✨
+- [ ] 🚧 **第 05 章**：SynchronizationContext 深度剖析（进行中）
+- [ ] 📅 **第 06 章**：CancellationToken 与超时控制
 - [ ] 📅 **第 07-21 章**：进阶篇 + 实战篇
 
 **更新频率**：争取每周 1-2 章
@@ -694,9 +781,9 @@ dotnet --version
 **当前进度**：
 - ✅ 第一章已完成
 - ✅ 第二章已完成
-- ✅ 第三章已完成（最新）
-- 🚧 第四章进行中
-- 预计 2025 年完成前 10 章
+- ✅ 第三章已完成
+- ✅ 第四章已完成（最新）
+- 🚧 第五章进行中
 
 ### Q4: 如何选择 async/await 还是 Parallel？
 
