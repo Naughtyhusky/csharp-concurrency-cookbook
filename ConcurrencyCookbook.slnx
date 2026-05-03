@@ -5,6 +5,8 @@
   </Folder>
   <Folder Name="/03-06.AsyncBasics/">
     <Project Path="AsyncAwait/AsyncAwait.csproj" Id="1ce74a8e-dbb6-4c6c-bbee-493891f7d63a" />
+    <Project Path="SyncContext.Winform/SyncContext.Winform.csproj" Id="f9464693-b239-468a-a0a2-a202c3848945" />
+    <Project Path="SyncContext/SyncContext.csproj" Id="5f712768-fa12-449b-9ae8-862896e26298" />
     <Project Path="TaskAPI/TaskAPI.csproj" Id="29331b8f-c9ce-4d89-ad6d-c8758f207648" />
   </Folder>
 </Solution>
