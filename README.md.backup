@@ -160,6 +160,8 @@ csharp-concurrency-cookbook/
 
 **学习目标**：理解并发、并行、异步的区别，学会根据场景选择技术
 
+**📖 博客文章**：[01-并发编程全景图-博客版.md](Blogs/01-并发编程全景图-博客版.md)
+
 **💻 代码位置**：`Overview/` 文件夹
 
 | 文件 | 说明 | 核心内容 |
@@ -180,6 +182,8 @@ dotnet run --project Overview
 ### ✅ 第02章：并发的底层（Thread、ThreadPool、Task）
 
 **学习目标**：深入理解 Thread、ThreadPool 和 Task 的本质区别和底层机制
+
+**📖 博客文章**：[02-并发的底层-Thread-ThreadPool-Task.md](Blogs/02-并发的底层-Thread-ThreadPool-Task.md)
 
 **💻 代码位置**：`Threads/` 文件夹
 
@@ -205,6 +209,8 @@ dotnet run --project Threads
 ### ✅ 第03章：Task API 完全指南
 
 **学习目标**：系统掌握 Task 类的核心 API，为 async/await 打下坚实基础
+
+**📖 博客文章**：[03-Task-API完全指南.md](Blogs/03-Task-API完全指南.md)
 
 **💻 代码位置**：`TaskAPI/` 文件夹
 
@@ -236,6 +242,8 @@ dotnet run --project TaskAPI
 
 **学习目标**：深入理解 async/await 的编译器魔法，掌握性能优化技巧
 
+**📖 博客文章**：[04-async-await原理与性能优化.md](Blogs/04-async-await原理与性能优化.md)
+
 **💻 代码位置**：`AsyncAwait/` 文件夹
 
 | 文件 | 说明 | 核心内容 |
@@ -266,6 +274,8 @@ dotnet run --project AsyncAwait
 
 **学习目标**：彻底搞懂 SynchronizationContext，理解死锁的根本原因
 
+**📖 博客文章**：[05-SynchronizationContext与死锁问题.md](Blogs/05-SynchronizationContext与死锁问题.md)
+
 **💻 代码位置**：`SyncContext/` 和 `SyncContext.Winform/` 文件夹
 
 **核心知识点**：
@@ -288,6 +298,8 @@ dotnet run --project SyncContext
 ### ✅ 第06章：CancellationToken 与超时控制
 
 **学习目标**：掌握 CancellationToken 的正确使用，实现优雅的取消和超时控制
+
+**📖 博客文章**：[06-CancellationToken与超时控制.md](Blogs/06-CancellationToken与超时控制.md)
 
 **💻 代码位置**：`CancellationToken/` 和 `CancellationToken.WebApi.Demo/` 文件夹
 
@@ -312,6 +324,8 @@ dotnet run --project CancellationToken.WebApi.Demo
 ### ✅ 第07章：异步异常处理
 
 **学习目标**：掌握异步异常处理的正确姿势，理解 AggregateException 的设计思想
+
+**📖 博客文章**：[07-异步异常处理-AggregateException的拆解.md](Blogs/07-异步异常处理-AggregateException的拆解.md)
 
 **💻 代码位置**：`ExceptionHandling/` 文件夹
 
@@ -736,30 +750,9 @@ dotnet --version
 
 ---
 
-## 🛠️ 技术栈
+## 🤝 如何贡献
 
-- **框架**：.NET 10
-- **语言**：C# 14.0
-- **IDE**：Visual Studio 2026 / VS Code / Rider
-
-### 环境要求
-
-```bash
-# 检查 .NET 版本
-dotnet --version
-# 应该显示：10.x.x
-
-# 如果没有安装 .NET 10
-# 下载：https://dotnet.microsoft.com/download
-```
-
----
-
-## 🤝 贡献指南
-
-欢迎贡献代码、提出建议或报告问题！
-
-### 如何贡献
+欢迎贡献代码或提出建议！
 
 1. **Fork** 本仓库
 2. 创建特性分支：`git checkout -b feature/amazing-feature`
@@ -767,24 +760,218 @@ dotnet --version
 4. 推送分支：`git push origin feature/amazing-feature`
 5. 提交 **Pull Request**
 
-### 贡献要求
+### 贡献指南
 
 - ✅ 代码示例应该简洁、可运行
-- ✅ 添加详细的中文注释
-- ✅ 提交前运行所有示例，确保无编译错误
+- ✅ 添加详细的注释
+- ✅ 提交前运行所有示例，确保无错误
 - ✅ 一个 PR 解决一个问题
-- ✅ 遵循项目现有的代码风格
+
+---
+
+## 📝 路线图
+
+### 📊 整体进度：4/21 章节（19.0%）
+
+本项目是《C# 并发编程实战：从零到精通》系列教程的配套代码仓库，**共 21 章**。
+
+---
+
+### 🗺️ 完整系列大纲
+
+#### **第一篇：基础篇（2章）**
+
+| 章节 | 状态 | 主题 | 代码位置 |
+|------|------|------|---------|
+| ✅ 01 | **已完成** | 并发编程全景图 | `Overview/` |
+| ✅ 02 | **已完成** | 线程的底层：Thread、ThreadPool 与 Task | `Threads/` |
+
+**目标**：建立并发编程的全局认知，理解核心概念和底层机制。
+
+---
+
+#### **第二篇：异步基础篇（4章）**
+
+| 章节 | 状态 | 主题 | 代码位置 |
+|------|------|------|---------|
+| ✅ 03 | **已完成** | Task API 完全指南 | `TaskAPI/` |
+| ✅ 04 | **已完成** | async/await 原理与性能优化 | `AsyncAwait/` |
+| 📅 05 | 计划中 | SynchronizationContext 深度剖析 | `SyncContext/` |
+| 📅 06 | 计划中 | CancellationToken 与超时控制 | `Cancellation/` |
+
+**目标**：系统掌握 Task 和 async/await 的核心用法与底层原理。
+
+---
+
+#### **第三篇：异步进阶篇（3章）**
+
+| 章节 | 状态 | 主题 | 代码位置 |
+|------|------|------|---------|
+| 📅 07 | 计划中 | 异步异常处理 | `AsyncExceptions/` |
+| 📅 08 | 计划中 | 异步编程最佳实践 | `AsyncBestPractices/` |
+| 📅 09 | 计划中 | 异步编程中的内存泄漏 | `AsyncMemoryLeaks/` |
+
+**目标**：掌握异步编程的高级问题，如异常、反模式、内存泄漏等陷阱。
+
+---
+
+#### **第四篇：并行与同步篇（5章）**
+
+| 章节 | 状态 | 主题 | 代码位置 |
+|------|------|------|---------|
+| 📅 10 | 计划中 | Parallel 与 PLINQ | `Parallel/` |
+| 📅 11 | 计划中 | 并发安全完全指南 | `Locks/` |
+| 📅 12 | 计划中 | 线程安全集合与不可变集合 | `ConcurrentCollections/` |
+| 📅 13 | 计划中 | ThreadLocal 与 AsyncLocal | `ThreadLocal/` |
+| 📅 14 | 计划中 | 原子操作与内存模型 | `Atomics/` |
+
+**目标**：掌握 CPU 密集型任务的并行处理和并发安全问题。
+
+---
+
+#### **第五篇：高级模式篇（3章）**
+
+| 章节 | 状态 | 主题 | 代码位置 |
+|------|------|------|---------|
+| 📅 15 | 计划中 | TPL Dataflow 数据流 | `Dataflow/` |
+| 📅 16 | 计划中 | IAsyncEnumerable 异步流 | `AsyncEnumerable/` |
+| 📅 17 | 计划中 | Background Service 后台服务 | `BackgroundService/` |
+
+**目标**：学习高级并发模式，用于复杂的异步和数据流场景。
+
+---
+
+#### **第六篇：性能与实战篇（4章）**
+
+| 章节 | 状态 | 主题 | 代码位置 |
+|------|------|------|---------|
+| 📅 18 | 计划中 | 限流与并发控制 | `RateLimiting/` |
+| 📅 19 | 计划中 | 性能优化实战 | `Performance/` |
+| 📅 20 | 计划中 | 性能调试与诊断实战 | `Diagnostics/` |
+| 📅 21 | 计划中 | 实战案例：同步改异步全解 | `RealWorld/` |
+
+**目标**：掌握高性能并发代码的实战技巧和优化方法。
+
+---
+
+### 🎯 近期计划
+
+- [x] ✅ **第 01 章**：并发编程全景图（已完成）
+- [x] ✅ **第 02 章**：线程的底层原理（已完成）
+- [x] ✅ **第 03 章**：Task API 完全指南（已完成）
+- [x] ✅ **第 04 章**：async/await 原理与性能优化（已完成）✨
+- [ ] 🚧 **第 05 章**：SynchronizationContext 深度剖析（进行中）
+- [ ] 📅 **第 06 章**：CancellationToken 与超时控制
+- [ ] 📅 **第 07-21 章**：进阶篇 + 实战篇
+
+**更新频率**：争取每周 1-2 章
+
+---
+
+### 📖 系列特点
+
+1. **系统性**：21 章完整覆盖 C# 并发编程全栈
+2. **渐进性**：从概念 → 基础 → 进阶 → 实战
+3. **实战性**：每章都有可运行的代码示例
+4. **深度性**：不只讲 How，更讲 Why
+5. **现代性**：基于 .NET 10，涵盖最新特性
+
+---
+
+> **提示**：代码将随着系列进度逐步添加。⭐ **Star** 本仓库以获取更新通知！
+
+---
+
+## ❓ 常见问题
+
+### Q1: 为什么示例代码这么简单？
+
+**A**: 本项目是**教学项目**，目标是让你理解原理。简单的代码更容易理解核心概念。生产环境需要考虑：
+- 错误处理
+- 日志记录
+- 取消机制（CancellationToken）
+- 超时处理
+- 资源管理
+
+### Q2: 可以直接用在生产环境吗？
+
+**A**: 示例代码展示的是**核心模式**，可以作为参考，但生产环境需要更多完善。
+
+### Q3: 为什么没有更多章节的代码？
+
+**A**: 本项目是**系列教程**（共 21 章），代码将随着教程进度逐步添加。
+
+**更新频率**：
+- 每周 1-2 章
+- 关注仓库以获取最新更新
+
+**当前进度**：
+- ✅ 第一章已完成
+- ✅ 第二章已完成
+- ✅ 第三章已完成
+- ✅ 第四章已完成（最新）
+- 🚧 第五章进行中
+
+### Q4: 如何选择 async/await 还是 Parallel？
+
+**A**: 看**任务在等什么**：
+- 等 I/O（网络、磁盘、数据库）→ `async/await`
+- 等 CPU 计算 → `Parallel` / `PLINQ`
+
+### Q5: 如何获取更新通知？
+
+**A**: 
+- ⭐ **Star** 本仓库（右上角）
+- 👁️ **Watch** → **Custom** → 勾选 **Releases**
+- 📧 GitHub 会在新章节发布时邮件通知你
+
+---
+
+## 📚 推荐资源
+
+### 官方文档
+- [Microsoft Docs: Async/Await](https://docs.microsoft.com/en-us/dotnet/csharp/async)
+- [Task-based Asynchronous Pattern](https://docs.microsoft.com/en-us/dotnet/standard/asynchronous-programming-patterns/task-based-asynchronous-pattern-tap)
+- [Parallel Programming in .NET](https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/)
+
+### 深度文章
+- [Stephen Cleary: There is no Thread](https://blog.stephencleary.com/2013/11/there-is-no-thread.html)
+- [Stephen Toub: ConfigureAwait FAQ](https://devblogs.microsoft.com/dotnet/configureawait-faq/)
+- [Async/Await Best Practices](https://docs.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming)
+
+### 书籍推荐
+- **Concurrency in C# Cookbook** by Stephen Cleary
+- **C# in Depth** by Jon Skeet（第 15-16 章）
 
 ---
 
 ## 📄 许可证
 
-本项目采用 **MIT 许可证**，详见 [LICENSE](LICENSE) 文件。
+本项目采用 [MIT License](LICENSE) 开源。
 
 ---
 
-## ⭐ Star History
+## 🙏 致谢
+
+感谢所有为 C# 并发编程教育做出贡献的开发者！
+
+---
+
+## 🌟 Star History
+
+如果这个项目对你有帮助，请给个 **⭐ Star** 支持一下！
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Naughtyhusky/csharp-concurrency-cookbook&type=Date)](https://star-history.com/#Naughtyhusky/csharp-concurrency-cookbook&Date)
 
+---
 
+## 📞 联系方式
+
+- **GitHub Issues**: [提出问题或建议](https://github.com/Naughtyhusky/csharp-concurrency-cookbook/issues)
+- **Discussions**: [参与讨论](https://github.com/Naughtyhusky/csharp-concurrency-cookbook/discussions)
+
+---
+
+**⭐ 如果觉得有用，别忘了点个 Star！**
+
+**Made with ❤️ by C# 开发者，为 C# 开发者**
