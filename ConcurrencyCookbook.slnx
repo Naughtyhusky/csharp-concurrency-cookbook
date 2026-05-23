@@ -14,5 +14,6 @@
   <Folder Name="/07-09.AsyncAdvanced/">
     <Project Path="BestPractices/BestPractices.csproj" Id="cac39776-9aa9-4949-badd-0c9b7bbae37e" />
     <Project Path="ExceptionHandling/ExceptionHandling.csproj" Id="651eae45-95e1-476e-bc12-266829fa2d29" />
+    <Project Path="MemoryLeaks/MemoryLeaks.csproj" Id="3b5c2f2c-3cbf-4bd5-b185-9002618daba4" />
   </Folder>
 </Solution>
