@@ -12,6 +12,7 @@
     <Project Path="TaskAPI/TaskAPI.csproj" Id="29331b8f-c9ce-4d89-ad6d-c8758f207648" />
   </Folder>
   <Folder Name="/07-09.AsyncAdvanced/">
+    <Project Path="BestPractices/BestPractices.csproj" Id="cac39776-9aa9-4949-badd-0c9b7bbae37e" />
     <Project Path="ExceptionHandling/ExceptionHandling.csproj" Id="651eae45-95e1-476e-bc12-266829fa2d29" />
   </Folder>
 </Solution>
