@@ -6,7 +6,7 @@
 [![C#](https://img.shields.io/badge/C%23-14.0-239120?logo=csharp)](https://docs.microsoft.com/en-us/dotnet/csharp/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/Naughtyhusky/csharp-concurrency-cookbook?style=social)](https://github.com/Naughtyhusky/csharp-concurrency-cookbook)
-[![Progress](https://img.shields.io/badge/进度-9%2F21-brightgreen)]()
+[![Progress](https://img.shields.io/badge/进度-10%2F21-brightgreen)]()
 
 ---
 
@@ -80,6 +80,7 @@ csharp-concurrency-cookbook/
 │   ├── 07-异步异常处理-AggregateException的拆解.md
 │   ├── 08-异步编程最佳实践与反模式.md
 │   ├── 09-异步编程中的内存泄漏.md
+│   ├── 10-Parallel与PLINQ-榨干多核CPU.md
 │   └── 大纲.md                     # 📋 完整系列大纲（21篇）
 │
 ├── Overview/                       # 第01章：并发编程全景图
@@ -160,6 +161,20 @@ csharp-concurrency-cookbook/
 │       ├── ValueTaskDemo.cs        # ValueTask 正确用法
 │       └── SyncCallingAsyncDemo.cs # 同步调用异步的安全写法
 │
+├── Parallel-PLinq/                 # 第10章：Parallel 与 PLINQ
+│   ├── Program.cs                  # 程序入口
+│   ├── ParallelBasic/
+│   │   ├── ParallelForDemo.cs      # Parallel.For/ForEach 基本用法与线程本地变量
+│   │   └── ParallelBreakDemo.cs    # Break、Stop、CancellationToken 取消
+│   ├── PLinqBasic/
+│   │   └── PLinqDemo.cs            # AsParallel、AsOrdered、ForAll、异常处理
+│   ├── WhenToUse/
+│   │   └── WhenToUseParallelDemo.cs # 决策树与实战案例
+│   ├── Performance/
+│   │   └── PerformanceComparisonDemo.cs # 顺序/Parallel/PLINQ 性能对比
+│   └── Pitfalls/
+│       └── CommonPitfallsDemo.cs   # 4大常见陷阱演示
+│
 ├── MemoryLeaks/                    # 第09章：异步编程中的内存泄漏
 │   ├── Program.cs                  # 程序入口
 │   ├── Leaks/
@@ -179,7 +194,7 @@ csharp-concurrency-cookbook/
 └── ConcurrencyCookbook.sln         # 解决方案
 ```
 
-> **进度更新**：本项目是 21 篇系列教程，当前已完成：**9/21 章节** (42.9%)  
+> **进度更新**：本项目是 21 篇系列教程，当前已完成：**10/21 章节** (47.6%)  
 > 📖 **博客** + 💻 **代码示例** 齐全！
 
 ---
@@ -440,6 +455,37 @@ dotnet run --project MemoryLeaks
 
 ---
 
+### ✅ 第10章：Parallel 与 PLINQ——榨干多核 CPU
+
+**学习目标**：掌握 Parallel.For/ForEach 与 PLINQ 的正确用法，知道何时并行、如何避免 4 大常见陷阱
+
+**💻 代码位置**：`Parallel-PLinq/` 文件夹
+
+| 文件                                       | 说明              | 核心内容                              |
+| ------------------------------------------ | ----------------- | ------------------------------------- |
+| `ParallelBasic/ParallelForDemo.cs`         | Parallel 基本用法 | 线程本地变量、避免数据竞争            |
+| `ParallelBasic/ParallelBreakDemo.cs`       | 循环中断          | Break/Stop/CancellationToken          |
+| `PLinqBasic/PLinqDemo.cs`                  | PLINQ 全特性      | AsParallel/AsOrdered/ForAll/异常处理  |
+| `WhenToUse/WhenToUseParallelDemo.cs`       | 何时用并行        | 决策树、图像处理、订单统计实战        |
+| `Performance/PerformanceComparisonDemo.cs` | 性能对比          | 不同数据量的加速比，Parallel vs PLINQ |
+| `Pitfalls/CommonPitfallsDemo.cs`           | 常见陷阱          | List 写入/IO 误用/并行度过高/副作用   |
+
+**运行方式**：
+
+```bash
+dotnet run --project Parallel-PLinq
+```
+
+**核心知识点**：
+
+- ⚠️ Parallel/PLINQ 只适合 **CPU 密集型**，IO 密集型永远用 `async/await`
+- 🧵 线程本地变量：`localInit + body + localFinally` 把锁争用从百万次降到线程数次
+- 🎛️ `WithDegreeOfParallelism`：生产环境必加，避免占满所有核心
+- 📏 并行三条件：CPU 密集 + 任务独立 + 数据量/计算量足够大
+- 🔐 并行中的写操作必须线程安全：用 `ConcurrentBag`、`Interlocked` 或让 PLINQ 内部合并
+
+---
+
 ## 💡 核心代码示例
 
 ### 示例 1：并发做饭（理解并发）
@@ -688,43 +734,41 @@ dotnet --version
 
 ## 📚 系列大纲（21章规划）
 
-> 完整系列大纲请查看：[大纲.md](Blogs/大纲.md)
-
-### 📊 整体进度：9/21 章节（42.9%）
+### 📊 整体进度：10/21 章节（47.6%）
 
 #### **第一篇：基础篇（2章）** ✅ 已完成
 
-| 章节 | 状态 | 主题 | 博客 | 代码 |
-|------|------|------|------|------|
-| 01 | ✅ | 并发编程全景图 | [📖](Blogs/01-并发编程全景图-博客版.md) | `Overview/` |
-| 02 | ✅ | Thread、ThreadPool 与 Task | [📖](Blogs/02-并发的底层-Thread-ThreadPool-Task.md) | `Threads/` |
+| 章节 | 状态 | 主题 代码 |
+|------|------|------|------|
+| 01 | ✅ | 并发编程全景图 | `Overview/` |
+| 02 | ✅ | Thread、ThreadPool 与 Task  | `Threads/` |
 
 #### **第二篇：异步基础篇（4章）** ✅ 已完成
 
-| 章节 | 状态 | 主题 | 博客 | 代码 |
-|------|------|------|------|------|
-| 03 | ✅ | Task API 完全指南 | [📖](Blogs/03-Task-API完全指南.md) | `TaskAPI/` |
-| 04 | ✅ | async/await 原理与性能优化 | [📖](Blogs/04-async-await原理与性能优化.md) | `AsyncAwait/` |
-| 05 | ✅ | SynchronizationContext 与死锁 | [📖](Blogs/05-SynchronizationContext与死锁问题.md) | `SyncContext/` |
-| 06 | ✅ | CancellationToken 与超时控制 | [📖](Blogs/06-CancellationToken与超时控制.md) | `CancellationToken/` |
+| 章节 | 状态 | 主题 |代码 |
+|------|------|------|-----|
+| 03 | ✅ | Task API 完全指南 | `TaskAPI/` |
+| 04 | ✅ | async/await 原理与性能优化 | `AsyncAwait/` |
+| 05 | ✅ | SynchronizationContext 与死锁  | `SyncContext/` |
+| 06 | ✅ | CancellationToken 与超时控制 | `CancellationToken/` |
 
 #### **第三篇：异步进阶篇（3章）** ✅ 已完成
 
-| 章节 | 状态 | 主题 | 博客 | 代码 |
-|------|------|------|------|------|
-| 07 | ✅ | 异步异常处理 | [📖](Blogs/07-异步异常处理-AggregateException的拆解.md) | `ExceptionHandling/` |
-| 08 | ✅ | 异步编程最佳实践与反模式 | [📖](Blogs/08-异步编程最佳实践与反模式.md) | `BestPractices/` |
-| 09 | ✅ | 异步编程中的内存泄漏 | [📖](Blogs/09-异步编程中的内存泄漏.md) | `MemoryLeaks/` |
+| 章节 | 状态 | 主题 | 代码 |
+|------|------|------|------
+| 07 | ✅ | 异步异常处理| `ExceptionHandling/` |
+| 08 | ✅ | 异步编程最佳实践与反模式 | `BestPractices/` |
+| 09 | ✅ | 异步编程中的内存泄漏 | `MemoryLeaks/` |
 
-#### **第四篇：并行与同步篇（5章）** 📅 计划中
+#### **第四篇：并行与同步篇（5章）** 🚧 进行中
 
-| 章节 | 状态 | 主题 |
-|------|------|------|
-| 10 | 📅 | Parallel 与 PLINQ |
-| 11 | 📅 | 线程同步完全指南 |
-| 12 | 📅 | 并发集合与线程安全 |
-| 13 | 📅 | ThreadLocal 与 AsyncLocal |
-| 14 | 📅 | 无锁编程与内存模型 |
+| 章节 | 状态 | 主题 | 代码 |
+|------|------|------|------|
+| 10 | ✅ | Parallel 与 PLINQ：榨干多核 CPU | `Parallel-PLinq/` |
+| 11 | 📅 | 线程同步完全指南 | 计划中 |
+| 12 | 📅 | 并发集合与线程安全 |计划中 |
+| 13 | 📅 | ThreadLocal 与 AsyncLocal | 计划中 |
+| 14 | 📅 | 无锁编程与内存模型 | 计划中  |
 
 #### **第五篇：高级模式篇（3章）** 📅 计划中
 
@@ -742,18 +786,6 @@ dotnet --version
 | 19 | 📅 | 高性能优化实战 |
 | 20 | 📅 | 性能诊断与调优 |
 | 21 | 📅 | 实战项目：同步改异步迁移 |
-
----
-
-1. ✅ **运行示例**：`dotnet run --project Overview`
-2. ✅ **阅读代码**：按顺序查看：
-   - `Program.cs` - 了解整体结构
-   - `ConcurrencyDemo.cs` - 理解并发
-   - `ParallelDemo.cs` - 理解并行
-   - `AsyncDemo.cs` - 理解异步
-   - `TaskTypeDemo.cs` - 学会识别任务类型
-   - `CommonMistakesDemo.cs` - 避免常见错误
-3. ✅ **实战应用**：应用到你的项目中
 
 ---
 
