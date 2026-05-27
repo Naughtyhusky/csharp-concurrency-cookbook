@@ -17,6 +17,7 @@
     <Project Path="MemoryLeaks/MemoryLeaks.csproj" Id="3b5c2f2c-3cbf-4bd5-b185-9002618daba4" />
   </Folder>
   <Folder Name="/10-14.ParallelAndSync/">
+    <Project Path="Locks/Locks.csproj" Id="3eff61df-d93c-40f4-adcb-24872e5a8440" />
     <Project Path="Parallel-PLinq/Parallel_PLinq.csproj" Id="282cf81a-5c95-4ea7-bf7b-d081690e3835" />
   </Folder>
 </Solution>

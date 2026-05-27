@@ -81,6 +81,7 @@ csharp-concurrency-cookbook/
 │   ├── 08-异步编程最佳实践与反模式.md
 │   ├── 09-异步编程中的内存泄漏.md
 │   ├── 10-Parallel与PLINQ-榨干多核CPU.md
+│   ├── 11-锁机制完全指南-从lock到异步锁.md
 │   └── 大纲.md                     # 📋 完整系列大纲（21篇）
 │
 ├── Overview/                       # 第01章：并发编程全景图
@@ -194,7 +195,7 @@ csharp-concurrency-cookbook/
 └── ConcurrencyCookbook.sln         # 解决方案
 ```
 
-> **进度更新**：本项目是 21 篇系列教程，当前已完成：**10/21 章节** (47.6%)  
+> **进度更新**：本项目是 21 篇系列教程，当前已完成：**11/21 章节** (52.4%)
 > 📖 **博客** + 💻 **代码示例** 齐全！
 
 ---
@@ -486,6 +487,42 @@ dotnet run --project Parallel-PLinq
 
 ---
 
+### ✅ 第11章：锁机制完全指南——从 lock 到异步锁
+
+**学习目标**：彻底搞清楚 C# 里所有常用锁的底层原理、适用场景和正确用法，知道什么时候用哪种锁
+
+**💻 代码位置**：`Locks/` 文件夹
+
+| 文件 | 说明 | 核心内容 |
+|------|------|---------|
+| `Internals/LockInternalsDemo.cs` | 底层原理 | 用户态/内核态/混合锁、SpinWait 自适应策略 |
+| `LockBasics/LockAndMonitorDemo.cs` | lock/Monitor | 本质、数据竞争、TryEnter 超时、Wait/Pulse |
+| `LockBasics/SpinLockDemo.cs` | SpinLock | 正确用法、值类型陷阱、性能对比 |
+| `AdvancedLocks/ReaderWriterLockSlimDemo.cs` | 读写锁 | 三种锁模式、线程安全缓存、可升级锁 |
+| `AdvancedLocks/SemaphoreSlimDemo.cs` | 信号量 | 并发限制、HTTP 限流、异步互斥 |
+| `AdvancedLocks/MutexDemo.cs` | Mutex | 跨进程互斥、单实例程序、性能对比 |
+| `AsyncLock/AsyncLockDemo.cs` | 异步锁 | CS1996 原因、AsyncLock 实现与使用 |
+| `Pitfalls/LockPitfallsDemo.cs` | 常见陷阱 | 错误 lock 对象、死锁、SpinLock 复制、信号量泄漏 |
+| `Comparison/LockPerformanceComparison.cs` | 性能对比 | 所有锁的横向对比基准 |
+
+**运行方式**：
+
+```bash
+dotnet run --project Locks
+```
+
+**核心知识点**：
+
+- 🔬 三种机制：用户态（~30ns）/ 内核态（~2000ns）/ 混合（先自旋后内核）
+- 🔐 `lock` = `Monitor.Enter/Exit` 语法糖，99% 场景的首选
+- ⚡ `SpinLock` 适合极短临界区（< 100ns），是 **struct**，必须 `ref` 传递
+- 📖 `ReaderWriterLockSlim`：读多写少时读操作可并行，写操作独占
+- 🚦 `SemaphoreSlim`：并发限流 + `WaitAsync` 支持异步，`(1,1)` 当异步互斥锁
+- 🔑 `Mutex`：跨进程互斥唯一选择，进程内同步比 lock 慢 100x
+- 🔄 `lock` 里不能 `await`（CS1996），异步互斥用 `SemaphoreSlim` 或封装 `AsyncLock`
+
+---
+
 ## 💡 核心代码示例
 
 ### 示例 1：并发做饭（理解并发）
@@ -734,7 +771,7 @@ dotnet --version
 
 ## 📚 系列大纲（21章规划）
 
-### 📊 整体进度：10/21 章节（47.6%）
+### 📊 整体进度：11/21 章节（52.4%）
 
 #### **第一篇：基础篇（2章）** ✅ 已完成
 
@@ -765,7 +802,7 @@ dotnet --version
 | 章节 | 状态 | 主题 | 代码 |
 |------|------|------|------|
 | 10 | ✅ | Parallel 与 PLINQ：榨干多核 CPU | `Parallel-PLinq/` |
-| 11 | 📅 | 线程同步完全指南 | 计划中 |
+| 11 | ✅ | 锁机制完全指南：从 lock 到异步锁 | `Locks/` |
 | 12 | 📅 | 并发集合与线程安全 |计划中 |
 | 13 | 📅 | ThreadLocal 与 AsyncLocal | 计划中 |
 | 14 | 📅 | 无锁编程与内存模型 | 计划中  |
