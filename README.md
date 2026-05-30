@@ -6,7 +6,7 @@
 [![C#](https://img.shields.io/badge/C%23-14.0-239120?logo=csharp)](https://docs.microsoft.com/en-us/dotnet/csharp/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/Naughtyhusky/csharp-concurrency-cookbook?style=social)](https://github.com/Naughtyhusky/csharp-concurrency-cookbook)
-[![Progress](https://img.shields.io/badge/进度-10%2F21-brightgreen)]()
+[![Progress](https://img.shields.io/badge/进度-12%2F21-brightgreen)]()
 
 ---
 
@@ -82,6 +82,7 @@ csharp-concurrency-cookbook/
 │   ├── 09-异步编程中的内存泄漏.md
 │   ├── 10-Parallel与PLINQ-榨干多核CPU.md
 │   ├── 11-锁机制完全指南-从lock到异步锁.md
+│   ├── 12-并发集合与线程安全类型.md
 │   └── 大纲.md                     # 📋 完整系列大纲（21篇）
 │
 ├── Overview/                       # 第01章：并发编程全景图
@@ -176,6 +177,14 @@ csharp-concurrency-cookbook/
 │   └── Pitfalls/
 │       └── CommonPitfallsDemo.cs   # 4大常见陷阱演示
 │
+├── ConcurrentCollections/          # 第12章：并发集合与线程安全类型
+│   ├── Program.cs                  # 程序入口
+│   ├── Demo01_ConcurrentDictionary.cs  # ConcurrentDictionary 用法与原子操作
+│   ├── Demo02_QueueStackBag.cs     # ConcurrentQueue / Stack / Bag
+│   ├── Demo03_BlockingCollection.cs    # BlockingCollection 有界阻塞集合
+│   ├── Demo04_Channel.cs           # Channel<T> 异步生产者-消费者
+│   └── Demo05_ImmutableCollections.cs  # ImmutableCollections 不可变集合
+│
 ├── MemoryLeaks/                    # 第09章：异步编程中的内存泄漏
 │   ├── Program.cs                  # 程序入口
 │   ├── Leaks/
@@ -195,7 +204,7 @@ csharp-concurrency-cookbook/
 └── ConcurrencyCookbook.sln         # 解决方案
 ```
 
-> **进度更新**：本项目是 21 篇系列教程，当前已完成：**11/21 章节** (52.4%)
+> **进度更新**：本项目是 21 篇系列教程，当前已完成：**12/21 章节** (57.1%)
 > 📖 **博客** + 💻 **代码示例** 齐全！
 
 ---
@@ -491,6 +500,36 @@ dotnet run --project Parallel-PLinq
 
 **学习目标**：彻底搞清楚 C# 里所有常用锁的底层原理、适用场景和正确用法，知道什么时候用哪种锁
 
+---
+
+### ✅ 第12章：并发集合与线程安全类型
+
+**学习目标**：掌握 .NET 内置并发集合的内部实现原理与适用场景，知道什么时候用哪种集合，以及如何用 `Channel<T>` 和不可变集合实现无锁并发
+
+**💻 代码位置**：`ConcurrentCollections/` 文件夹
+
+| 文件 | 说明 | 核心内容 |
+|------|------|----------|
+| `Demo01_ConcurrentDictionary.cs` | 并发字典 | 原子操作、非原子复合操作的坑、页面计数器实战 |
+| `Demo02_QueueStackBag.cs` | 队列/栈/包 | FIFO 队列、LIFO 栈、ConcurrentBag 自产自销场景 |
+| `Demo03_BlockingCollection.cs` | 有界阻塞集合 | 单/多生产者消费者模式、CompleteAdding 协调 |
+| `Demo04_Channel.cs` | 异步生产消费 | try/finally + TryComplete、背压策略、日志管道实战 |
+| `Demo05_ImmutableCollections.cs` | 不可变集合 | Builder 批量构建、Volatile.Read 无锁快照读 |
+
+**运行方式**：
+```bash
+dotnet run --project ConcurrentCollections
+```
+
+**核心知识点**：
+
+- 🔑 `ConcurrentDictionary`：.NET Core 读操作完全无锁（volatile 读），写操作分段锁；`GetOrAdd`/`AddOrUpdate` 是原子操作，但组合调用不是
+- 📦 `ConcurrentQueue`：分段数组（32槽/段）+ CAS，无锁，比 Framework 链表版本缓存更友好
+- 🎒 `ConcurrentBag`：线程本地双端链表 + work-stealing，自产自销场景最优；跨线程生产消费请改用 `ConcurrentQueue` 或 `Channel<T>`
+- 🚦 `BlockingCollection`：同步阻塞包装器，适合同步代码；异步代码优先用 `Channel<T>`
+- 🚀 `Channel<T>`：生产者必须用 `try/finally` + `TryComplete(fault)` 确保 Complete 一定被调用，多生产者用协调任务而非 fire-and-forget
+- 🧊 `ImmutableCollections`：AVL 树结构共享使修改操作 O(log n)，批量操作用 Builder；`Volatile.Read` + `Interlocked.CompareExchange` 实现无锁原子替换
+
 **💻 代码位置**：`Locks/` 文件夹
 
 | 文件 | 说明 | 核心内容 |
@@ -771,7 +810,7 @@ dotnet --version
 
 ## 📚 系列大纲（21章规划）
 
-### 📊 整体进度：11/21 章节（52.4%）
+### 📊 整体进度：12/21 章节（57.1%）
 
 #### **第一篇：基础篇（2章）** ✅ 已完成
 
@@ -803,7 +842,7 @@ dotnet --version
 |------|------|------|------|
 | 10 | ✅ | Parallel 与 PLINQ：榨干多核 CPU | `Parallel-PLinq/` |
 | 11 | ✅ | 锁机制完全指南：从 lock 到异步锁 | `Locks/` |
-| 12 | 📅 | 并发集合与线程安全 |计划中 |
+| 12 | ✅ | 并发集合与线程安全类型 | `ConcurrentCollections/` |
 | 13 | 📅 | ThreadLocal 与 AsyncLocal | 计划中 |
 | 14 | 📅 | 无锁编程与内存模型 | 计划中  |
 
