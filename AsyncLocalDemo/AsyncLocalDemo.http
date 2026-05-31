@@ -1,0 +1,6 @@
+@AsyncLocalDemo_HostAddress = http://localhost:5270
+
+GET {{AsyncLocalDemo_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
