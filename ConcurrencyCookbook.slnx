@@ -19,6 +19,7 @@
   <Folder Name="/10-14.ParallelAndSync/">
     <Project Path="AsyncLocalDemo/AsyncLocalDemo.csproj" Id="7b0404a5-35c4-49e2-bddb-e3cd59a6aea2" />
     <Project Path="ConcurrentCollections/ConcurrentCollections.csproj" Id="f7c8d756-d582-467c-b295-907d3ae65468" />
+    <Project Path="LockFree/LockFree.csproj" Id="3ce0cd0c-256d-4bde-b593-a4443fa48476" />
     <Project Path="Locks/Locks.csproj" Id="3eff61df-d93c-40f4-adcb-24872e5a8440" />
     <Project Path="Parallel-PLinq/Parallel_PLinq.csproj" Id="282cf81a-5c95-4ea7-bf7b-d081690e3835" />
     <Project Path="ThreadLocal_AsyncLocal/ThreadLocal_AsyncLocal.csproj" Id="dc9e22bb-ddd4-4fe2-b9fa-bdfb2a1b1067" />
