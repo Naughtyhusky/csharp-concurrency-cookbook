@@ -24,4 +24,7 @@
     <Project Path="Parallel-PLinq/Parallel_PLinq.csproj" Id="282cf81a-5c95-4ea7-bf7b-d081690e3835" />
     <Project Path="ThreadLocal_AsyncLocal/ThreadLocal_AsyncLocal.csproj" Id="dc9e22bb-ddd4-4fe2-b9fa-bdfb2a1b1067" />
   </Folder>
+  <Folder Name="/15-17.AdvancedPatterns/">
+    <Project Path="Dataflow/Dataflow.csproj" Id="51d1b08e-fcfe-4c2e-affa-f950cc9c32ec" />
+  </Folder>
 </Solution>
