@@ -26,6 +26,7 @@
   </Folder>
   <Folder Name="/15-17.AdvancedPatterns/">
     <Project Path="AsyncEnumerable/AsyncEnumerable.csproj" Id="4312d9e7-0fde-4da9-8d5b-a66e507ad730" />
+    <Project Path="BackgroundService/BackgroundService.csproj" Id="41541245-83b6-4b8b-bba2-63c797795c21" />
     <Project Path="Dataflow/Dataflow.csproj" Id="51d1b08e-fcfe-4c2e-affa-f950cc9c32ec" />
   </Folder>
 </Solution>
