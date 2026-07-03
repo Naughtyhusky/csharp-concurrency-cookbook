@@ -29,4 +29,7 @@
     <Project Path="BackgroundService/BackgroundService.csproj" Id="41541245-83b6-4b8b-bba2-63c797795c21" />
     <Project Path="Dataflow/Dataflow.csproj" Id="51d1b08e-fcfe-4c2e-affa-f950cc9c32ec" />
   </Folder>
+  <Folder Name="/18-21.DiagnosticsAndPractice/">
+    <Project Path="RateLimiting/RateLimiting.csproj" Id="8300be64-72d0-4370-ab7f-b448183f3974" />
+  </Folder>
 </Solution>
