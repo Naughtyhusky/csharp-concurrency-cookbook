@@ -30,6 +30,7 @@
     <Project Path="Dataflow/Dataflow.csproj" Id="51d1b08e-fcfe-4c2e-affa-f950cc9c32ec" />
   </Folder>
   <Folder Name="/18-21.DiagnosticsAndPractice/">
+    <Project Path="PerformanceOptimization/PerformanceOptimization.csproj" Id="d9608508-998e-45d3-8383-4a7438550b00" />
     <Project Path="RateLimiting/RateLimiting.csproj" Id="8300be64-72d0-4370-ab7f-b448183f3974" />
   </Folder>
 </Solution>
