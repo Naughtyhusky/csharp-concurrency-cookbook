@@ -31,6 +31,7 @@
   </Folder>
   <Folder Name="/18-21.DiagnosticsAndPractice/">
     <Project Path="PerformanceOptimization/PerformanceOptimization.csproj" Id="d9608508-998e-45d3-8383-4a7438550b00" />
+    <Project Path="ProductionDiagnostics/ProductionDiagnostics.csproj" Id="a74c7a85-16ed-4256-9d30-77a70ed2616c" />
     <Project Path="RateLimiting/RateLimiting.csproj" Id="8300be64-72d0-4370-ab7f-b448183f3974" />
   </Folder>
 </Solution>
