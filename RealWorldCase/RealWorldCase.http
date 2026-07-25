@@ -1,0 +1,49 @@
+@RealWorldCase_HostAddress = http://localhost:5204
+
+GET {{RealWorldCase_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+# 快速对比测试：运行所有版本（V0 → V4）
+POST {{RealWorldCase_HostAddress}}/api/EvolutionDemo/quick-test
+Content-Type: application/json
+
+###
+
+# 指定版本运行（如只跑 V4 生产级版本）
+POST {{RealWorldCase_HostAddress}}/api/EvolutionDemo/run
+Content-Type: application/json
+
+{
+  "fileCount": 30,
+  "fileContentLines": 500,
+  "version": "V4"
+}
+
+###
+
+# 运行所有版本对比（大文件量测试）
+POST {{RealWorldCase_HostAddress}}/api/EvolutionDemo/run
+Content-Type: application/json
+
+{
+  "fileCount": 50,
+  "fileContentLines": 1000,
+  "version": null
+}
+
+###
+
+# 测试中间件的请求体读取（观察日志输出）
+POST {{RealWorldCase_HostAddress}}/api/EvolutionDemo/test-middleware
+Content-Type: application/json
+
+{
+  "name": "测试用户",
+  "action": "测试中间件请求体日志",
+  "data": {
+    "id": 123,
+    "items": ["a", "b", "c"]
+  }
+}
